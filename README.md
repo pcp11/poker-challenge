@@ -3,13 +3,14 @@
 ## Requirements
 Java 21 and Gradle 8.5+.
 
-## Building and running
+## Building and testing the project
+```bash
+./gradlew build
+```
 
-Build the project with
-`./gradlew build`.
-
-Test the project with
-`./gradlew test`.
+```bash
+./gradlew test
+```
 
 ## Task
 Poker rules description
