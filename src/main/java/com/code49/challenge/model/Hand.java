@@ -7,7 +7,7 @@ import static java.util.Comparator.comparing;
 
 public record Hand(List<Card> cards, HandRank rank) implements Comparable<Hand> {
 
-    public static Hand from(List<Card> cards) {
+    public static Hand of(List<Card> cards) {
         if (cards == null || cards.size() != 5) {
             throw new IllegalArgumentException("A poker hand requires 5 cards.");
         }
