@@ -22,17 +22,15 @@ public record Hand(Card[] cards, HandRank rank, CardValue[] tieRanks) implements
     }
 
     /**
-     * Calculates the rank of a poker hand given an array of cards and a sorted map of card values with their
-     * occurrence counts. This method determines the rank based on the traditional hand ranking system in poker,
+     * Calculates the rank of a poker hand based on the traditional hand ranking system in poker,
      * taking into account the number of different card values present, as well as specific combinations that
      * define hand ranks such as flushes and straights.
-     * s
      *
      * @param cards             An array of {@link Card} representing the player's hand.
      * @param sortedValueCounts A TreeMap containing {@link CardValue} as keys and their occurrence counts (Long)
      *                          as values. The TreeMap is sorted by the card values in their natural order.
      *                          {@link CardValue} represents the value of the card (e.g., Ace, King, Queen, etc.).
-     * @return A {@link HandRank} enum value representing the best hand rank that can be made with the given cards.
+     * @return A {@link HandRank} enum value representing the best rank that can be made with the given cards.
      */
     private static HandRank calcHandRank(Card[] cards, TreeMap<CardValue, Long> sortedValueCounts) {
         if (sortedValueCounts.keySet().size() == 4) {
@@ -60,9 +58,6 @@ public record Hand(Card[] cards, HandRank rank, CardValue[] tieRanks) implements
 
     /**
      * Calculates the tie-breaking ranks for a collection of cards based on their values and occurrence counts.
-     * This method is used to determine the ordering of card values for tie-breaking poker hands, such as
-     * when multiple players have hands of the same type (e.g., two pairs, full house).
-     * <p>
      * The method sorts the cards primarily by their occurrence counts (frequencies) and secondarily by their
      * intrinsic values (e.g., King, Queen) in descending order. For example, in a full house or two pairs situation,
      * the card values with higher frequencies (or higher values in case of equal frequencies) are considered stronger
