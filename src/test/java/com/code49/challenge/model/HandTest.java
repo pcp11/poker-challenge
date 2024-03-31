@@ -18,6 +18,6 @@ public class HandTest {
     @ParameterizedTest
     @MethodSource("com.code49.challenge.model.provider.CompareArgumentsProvider#provideArguments")
     void testCompare(Hand handP1, Hand handP2, int result) {
-        assertEquals(handP1.compareTo(handP2), result);
+        assertEquals(Math.signum(handP1.compareTo(handP2)), result);
     }
 }

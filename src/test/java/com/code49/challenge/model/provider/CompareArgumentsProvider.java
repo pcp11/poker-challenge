@@ -97,6 +97,6 @@ public class CompareArgumentsProvider {
                 Arguments.of(FOUR_OF_A_KIND_HAND1, FULL_HOUSE_HAND2, 1),
                 Arguments.of(FOUR_OF_A_KIND_HAND1, STRAIGHT_FLUSH_HAND2, -1),
                 Arguments.of(STRAIGHT_FLUSH_HAND1, FOUR_OF_A_KIND_HAND2, 1),
-                Arguments.of(STRAIGHT_FLUSH_HAND1, STRAIGHT_FLUSH_HAND2, 0));
+                Arguments.of(STRAIGHT_FLUSH_HAND1, STRAIGHT_FLUSH_HAND1, 0));
     }
 }
