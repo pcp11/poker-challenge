@@ -14,4 +14,10 @@ public class HandTest {
     void testEvaluate(List<Card> cardsP1, HandRank rank) {
         assertEquals(Hand.of(cardsP1).rank(), rank);
     }
+
+    @ParameterizedTest
+    @MethodSource("com.code49.challenge.model.provider.CompareArgumentsProvider#provideArguments")
+    void testCompare(Hand handP1, Hand handP2, int result) {
+        assertEquals(handP1.compareTo(handP2), result);
+    }
 }
