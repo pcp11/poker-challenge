@@ -65,7 +65,7 @@ public class EvaluateArgumentsProvider {
     public static final Card[] STRAIGHT_FLUSH_HAND2 = new Card[]{new Card(DIAMONDS, JACK), new Card(DIAMONDS, QUEEN),
             new Card(DIAMONDS, TEN), new Card(DIAMONDS, KING), new Card(DIAMONDS, ACE)};
 
-    public static Stream<Arguments> provideArguments() {
+    public static Stream<Arguments> provideEvaluateArguments() {
         return Stream.of(
                 Arguments.of(HIGH_CARD_HAND1, HIGH_CARD),
                 Arguments.of(HIGH_CARD_HAND2, HIGH_CARD),

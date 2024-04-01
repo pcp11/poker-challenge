@@ -65,20 +65,8 @@ public class CompareArgumentsProvider {
     public static final Hand STRAIGHT_FLUSH_HAND2 = Hand.of(new Card(CLUBS, FOUR), new Card(CLUBS, FIVE),
             new Card(CLUBS, SIX), new Card(CLUBS, SEVEN), new Card(CLUBS, EIGHT));
 
-    public static Stream<Arguments> provideArguments() {
+    public static Stream<Arguments> provideCompareArguments() {
         return Stream.of(
-                // Comparing equal ranks
-                Arguments.of(HIGH_CARD_HAND1, HIGH_CARD_HAND2, -1), // (K, 8, 6, 4, 2) < (K, 8, 6, 4, 3)
-                Arguments.of(ONE_PAIR_HAND1, ONE_PAIR_HAND2, -1), // (6, 6, 10, 9, 2) < (7, 7, 10, 9, 2)
-                Arguments.of(TWO_PAIRS_HAND1, TWO_PAIRS_HAND2, -1), // (9, 9, 5, 5, 3) < (9, 9, 6, 6, 3)
-                Arguments.of(THREE_OF_A_KIND_HAND1, THREE_OF_A_KIND_HAND2, 1), // (A, A, A, 8, 5) > (K, K, K, 8, 5)
-                Arguments.of(STRAIGHT_HAND1, STRAIGHT_HAND2, -1), // (6, 5, 4, 3, 2) < (A, 2, 3, 4, 5)
-                Arguments.of(FLUSH_HAND1, FLUSH_HAND2, 1), // (A, 8, 7, 6, 4) > (8, 7, 6, 4, 2)
-                Arguments.of(FULL_HOUSE_HAND1, FULL_HOUSE_HAND2, 1),  // (A, A, A, K, K) > (Q, Q, Q, J, J)
-                Arguments.of(FOUR_OF_A_KIND_HAND1, FOUR_OF_A_KIND_HAND2, -1), // (4, 4, 4, 4, 3) < (7, 7, 7, 7, 10)
-                Arguments.of(STRAIGHT_FLUSH_HAND1, STRAIGHT_FLUSH_HAND2, 1), // (9, 8, 7, 6, 5, 4) > (8, 7, 6, 5, 4)
-
-                // Comparing different ranks
                 Arguments.of(HIGH_CARD_HAND1, HIGH_CARD_HAND1, 0),
                 Arguments.of(HIGH_CARD_HAND1, ONE_PAIR_HAND2, -1),
                 Arguments.of(ONE_PAIR_HAND1, HIGH_CARD_HAND2, 1),
@@ -97,5 +85,18 @@ public class CompareArgumentsProvider {
                 Arguments.of(FOUR_OF_A_KIND_HAND1, STRAIGHT_FLUSH_HAND2, -1),
                 Arguments.of(STRAIGHT_FLUSH_HAND1, FOUR_OF_A_KIND_HAND2, 1),
                 Arguments.of(STRAIGHT_FLUSH_HAND1, STRAIGHT_FLUSH_HAND1, 0));
+    }
+
+    public static Stream<Arguments> provideTieBreakArguments() {
+        return Stream.of(
+                Arguments.of(HIGH_CARD_HAND1, HIGH_CARD_HAND2, -1), // (K, 8, 6, 4, 2) < (K, 8, 6, 4, 3)
+                Arguments.of(ONE_PAIR_HAND1, ONE_PAIR_HAND2, -1), // (6, 6, 10, 9, 2) < (7, 7, 10, 9, 2)
+                Arguments.of(TWO_PAIRS_HAND1, TWO_PAIRS_HAND2, -1), // (9, 9, 5, 5, 3) < (9, 9, 6, 6, 3)
+                Arguments.of(THREE_OF_A_KIND_HAND1, THREE_OF_A_KIND_HAND2, 1), // (A, A, A, 8, 5) > (K, K, K, 8, 5)
+                Arguments.of(STRAIGHT_HAND1, STRAIGHT_HAND2, 1), // (6, 5, 4, 3, 2) > (A, 2, 3, 4, 5)
+                Arguments.of(FLUSH_HAND1, FLUSH_HAND2, 1), // (A, 8, 7, 6, 4) > (8, 7, 6, 4, 2)
+                Arguments.of(FULL_HOUSE_HAND1, FULL_HOUSE_HAND2, 1),  // (A, A, A, K, K) > (Q, Q, Q, J, J)
+                Arguments.of(FOUR_OF_A_KIND_HAND1, FOUR_OF_A_KIND_HAND2, -1), // (4, 4, 4, 4, 3) < (7, 7, 7, 7, 10)
+                Arguments.of(STRAIGHT_FLUSH_HAND1, STRAIGHT_FLUSH_HAND2, 1)); // (9, 8, 7, 6, 5, 4) > (8, 7, 6, 5, 4)
     }
 }
