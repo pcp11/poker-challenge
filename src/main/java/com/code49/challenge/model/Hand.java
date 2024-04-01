@@ -1,6 +1,8 @@
 package com.code49.challenge.model;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static com.code49.challenge.model.CardValue.ACE;
 import static com.code49.challenge.model.CardValue.FIVE;
@@ -9,16 +11,13 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
 
-public record Hand(Card[] cards, HandRank rank, CardValue[] tieRanks) implements Comparable<Hand> {
+public record Hand(Card[] cards, HandRank rank, CardValue... tieRanks) implements Comparable<Hand> {
 
     public static Hand of(Card... cards) {
         if (cards.length != 5) {
             throw new IllegalArgumentException("A poker hand requires 5 cards.");
         }
-        var sortedValueCounts = Arrays.stream(cards)
-                .collect(groupingBy(Card::value, TreeMap::new, counting()));
-
-        return new Hand(cards, calcHandRank(cards, sortedValueCounts), calcTieRanks(sortedValueCounts));
+        return evaluateHand(cards);
     }
 
     /**
@@ -26,32 +25,34 @@ public record Hand(Card[] cards, HandRank rank, CardValue[] tieRanks) implements
      * taking into account the number of different card values present, as well as specific combinations that
      * define hand ranks such as flushes and straights.
      *
-     * @param cards             An array of {@link Card} representing the player's hand.
-     * @param sortedValueCounts A TreeMap containing {@link CardValue} as keys and their occurrence counts (Long)
-     *                          as values. The TreeMap is sorted by the card values in their natural order.
-     *                          {@link CardValue} represents the value of the card (e.g., Ace, King, Queen, etc.).
+     * @param cards An array of {@link Card} representing the player's hand.
      * @return A {@link HandRank} enum value representing the best rank that can be made with the given cards.
      */
-    private static HandRank calcHandRank(Card[] cards, TreeMap<CardValue, Long> sortedValueCounts) {
+    private static Hand evaluateHand(Card[] cards) {
+        TreeMap<CardValue, Long> sortedValueCounts = Arrays.stream(cards)
+                .collect(groupingBy(Card::value, TreeMap::new, counting()));
+
         if (sortedValueCounts.keySet().size() == 4) {
-            return ONE_PAIR;
+            return new Hand(cards, ONE_PAIR, calcTieRanks(sortedValueCounts));
         } else if (sortedValueCounts.keySet().size() == 3) {
-            return sortedValueCounts.containsValue(3L) ? THREE_OF_A_KIND : TWO_PAIRS;
+            boolean isThreeOfAKind = sortedValueCounts.containsValue(3L);
+            return new Hand(cards, isThreeOfAKind ? THREE_OF_A_KIND : TWO_PAIRS, calcTieRanks(sortedValueCounts));
         } else if (sortedValueCounts.keySet().size() == 2) {
-            return sortedValueCounts.containsValue(4L) ? FOUR_OF_A_KIND : FULL_HOUSE;
+            boolean isFourOfAKind = sortedValueCounts.containsValue(4L);
+            return new Hand(cards, isFourOfAKind ? FOUR_OF_A_KIND : FULL_HOUSE, calcTieRanks(sortedValueCounts));
         } else {
             boolean isFlush = Arrays.stream(cards).map(Card::suit).distinct().count() == 1;
-            boolean isStraight = (sortedValueCounts.lastKey().ordinal() - sortedValueCounts.firstKey().ordinal()) == 4
-                    || (sortedValueCounts.lastKey().equals(ACE) && sortedValueCounts.lowerKey(ACE).equals(FIVE));
+            boolean isStraight = (sortedValueCounts.lastKey().ordinal() - sortedValueCounts.firstKey().ordinal()) == 4;
+            boolean isWheel = sortedValueCounts.lastKey().equals(ACE) && sortedValueCounts.lowerKey(ACE).equals(FIVE);
 
-            if (isFlush && isStraight) {
-                return STRAIGHT_FLUSH;
+            if (isStraight) {
+                return new Hand(cards, isFlush ? STRAIGHT_FLUSH : STRAIGHT, sortedValueCounts.lastKey());
+            } else if (isWheel) {
+                return new Hand(cards, isFlush ? STRAIGHT_FLUSH : STRAIGHT, FIVE);
             } else if (isFlush) {
-                return FLUSH;
-            } else if (isStraight) {
-                return STRAIGHT;
+                return new Hand(cards, FLUSH, calcTieRanks(sortedValueCounts));
             } else {
-                return HIGH_CARD;
+                return new Hand(cards, HIGH_CARD, calcTieRanks(sortedValueCounts));
             }
         }
     }
