@@ -21,12 +21,15 @@ public record Hand(Card[] cards, HandRank rank, CardValue... tieRanks) implement
     }
 
     /**
-     * Calculates the rank of a poker hand based on the traditional hand ranking system in poker,
-     * taking into account the number of different card values present, as well as specific combinations that
-     * define hand ranks such as flushes and straights.
+     * Evaluates the poker hand represented by the given array of cards and determines its rank.
+     * This method analyzes the cards to identify poker hands such as One Pair, Two Pairs, Three of a Kind,
+     * Straight, Flush, Full House, Four of a Kind, Straight Flush, and High Card. It also calculates tie-breaking
+     * ranks for hands where multiple players might have the same hand type.
      *
-     * @param cards An array of {@link Card} representing the player's hand.
-     * @return A {@link HandRank} enum value representing the best rank that can be made with the given cards.
+     * @param cards An array of Card objects representing the player's poker hand. Each Card object includes
+     *              both a card value and a suit.
+     * @return A Hand object representing the evaluated poker hand, including its rank (e.g., One Pair, Flush),
+     *         and the tie-breaking ranks calculated from the cards.
      */
     private static Hand evaluateHand(Card[] cards) {
         TreeMap<CardValue, Long> sortedValueCounts = Arrays.stream(cards)
