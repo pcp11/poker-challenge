@@ -1,13 +1,13 @@
-package com.code49.challenge.model.provider;
+package com.poker.challenge.model.provider;
 
-import com.code49.challenge.model.Card;
-import com.code49.challenge.model.Hand;
+import com.poker.challenge.model.Card;
+import com.poker.challenge.model.Hand;
 import org.junit.jupiter.params.provider.Arguments;
 
 import java.util.stream.Stream;
 
-import static com.code49.challenge.model.CardSuit.*;
-import static com.code49.challenge.model.CardValue.*;
+import static com.poker.challenge.model.CardSuit.*;
+import static com.poker.challenge.model.CardValue.*;
 
 public class CompareArgumentsProvider {
 

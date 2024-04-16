@@ -1,4 +1,4 @@
-package com.code49.challenge.model;
+package com.poker.challenge.model;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;

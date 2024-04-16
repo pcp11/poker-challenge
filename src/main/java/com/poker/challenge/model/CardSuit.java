@@ -1,4 +1,4 @@
-package com.code49.challenge.model;
+package com.poker.challenge.model;
 
 public enum CardSuit {
     CLUBS,

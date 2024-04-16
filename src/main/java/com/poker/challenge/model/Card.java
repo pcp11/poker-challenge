@@ -1,3 +1,3 @@
-package com.code49.challenge.model;
+package com.poker.challenge.model;
 
 public record Card(CardSuit suit, CardValue value) {}
